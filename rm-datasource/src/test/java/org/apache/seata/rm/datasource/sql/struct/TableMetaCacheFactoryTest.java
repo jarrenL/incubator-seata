@@ -22,6 +22,7 @@ import org.apache.seata.rm.datasource.sql.struct.cache.MysqlTableMetaCache;
 import org.apache.seata.rm.datasource.sql.struct.cache.OceanBaseTableMetaCache;
 import org.apache.seata.rm.datasource.sql.struct.cache.OracleTableMetaCache;
 import org.apache.seata.rm.datasource.sql.struct.cache.PolarDBXTableMetaCache;
+import org.apache.seata.rm.datasource.sql.struct.cache.PostgresqlTableMetaCache;
 import org.apache.seata.sqlparser.util.JdbcConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,8 @@ public class TableMetaCacheFactoryTest {
                 TableMetaCacheFactory.getTableMetaCache(JdbcConstants.ORACLE) instanceof OracleTableMetaCache);
         Assertions.assertTrue(
                 TableMetaCacheFactory.getTableMetaCache(JdbcConstants.OCEANBASE) instanceof OceanBaseTableMetaCache);
+        Assertions.assertTrue(
+                TableMetaCacheFactory.getTableMetaCache(JdbcConstants.GAUSSDB) instanceof PostgresqlTableMetaCache);
         Assertions.assertEquals(
                 TableMetaCacheFactory.getTableMetaCache(JdbcConstants.ORACLE),
                 TableMetaCacheFactory.getTableMetaCache(JdbcConstants.ORACLE));

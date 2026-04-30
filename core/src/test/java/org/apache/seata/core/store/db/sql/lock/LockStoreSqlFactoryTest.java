@@ -34,6 +34,8 @@ public class LockStoreSqlFactoryTest {
 
     private static LockStoreSql POSTGRESQL_LOCK_STORE = LockStoreSqlFactory.getLogStoreSql("postgresql");
 
+    private static LockStoreSql GAUSSDB_LOCK_STORE = LockStoreSqlFactory.getLogStoreSql("gaussdb");
+
     private static LockStoreSql H2_LOCK_STORE = LockStoreSqlFactory.getLogStoreSql("h2");
 
     private static LockStoreSql OCEANBASE_LOCK_STORE = LockStoreSqlFactory.getLogStoreSql("oceanbase");
@@ -248,6 +250,11 @@ public class LockStoreSqlFactoryTest {
         Assertions.assertEquals(EXPECT_CHECK_GLOBAL_LOCKABLE_SQL, sql);
         sql = POSTGRESQL_LOCK_STORE.getCheckLockableSql(BRANCH_TABLE, 3);
         Assertions.assertEquals(EXPECT_CHECK_BRANCH_LOCKABLE_SQL, sql);
+    }
+
+    @Test
+    public void gaussdbLockTest() {
+        Assertions.assertEquals(POSTGRESQL_LOCK_STORE.getClass(), GAUSSDB_LOCK_STORE.getClass());
     }
 
     @Test

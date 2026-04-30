@@ -24,6 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LogStoreSqlsFactory {
 
+    private static final String DB_TYPE_GAUSSDB = "gaussdb";
+    private static final String DB_TYPE_POSTGRESQL = "postgresql";
+
     private static Map<String, LogStoreSqls> LOG_STORE_SQLS_MAP = new ConcurrentHashMap<>();
 
     /**
@@ -32,9 +35,10 @@ public class LogStoreSqlsFactory {
      * @return the LogStoreSqls
      */
     public static LogStoreSqls getLogStoreSqls(String dbType) {
+        String finalDbType = DB_TYPE_GAUSSDB.equalsIgnoreCase(dbType) ? DB_TYPE_POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
                 LOG_STORE_SQLS_MAP,
-                dbType,
-                key -> EnhancedServiceLoader.load(LogStoreSqls.class, dbType.toLowerCase()));
+                finalDbType,
+                key -> EnhancedServiceLoader.load(LogStoreSqls.class, finalDbType.toLowerCase()));
     }
 }

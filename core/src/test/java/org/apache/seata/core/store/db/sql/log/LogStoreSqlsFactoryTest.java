@@ -27,6 +27,8 @@ public class LogStoreSqlsFactoryTest {
 
     private static LogStoreSqls pgLog = LogStoreSqlsFactory.getLogStoreSqls("postgresql");
 
+    private static LogStoreSqls gaussdbLog = LogStoreSqlsFactory.getLogStoreSqls("gaussdb");
+
     private static LogStoreSqls h2Log = LogStoreSqlsFactory.getLogStoreSqls("h2");
 
     private static LogStoreSqls oceanbase = LogStoreSqlsFactory.getLogStoreSqls("oceanbase");
@@ -142,6 +144,11 @@ public class LogStoreSqlsFactoryTest {
         Assertions.assertNotNull(sql);
         sql = pgLog.getQueryBranchMax(branchTable);
         Assertions.assertNotNull(sql);
+    }
+
+    @Test
+    public void gaussdbLogTest() {
+        Assertions.assertEquals(pgLog.getClass(), gaussdbLog.getClass());
     }
 
     @Test

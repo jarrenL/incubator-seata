@@ -32,6 +32,8 @@ public class DruidDbTypeParserTest {
         Assertions.assertEquals(DruidDelegatingDbTypeParser.class, dbTypeParser.getClass());
         String dbType = dbTypeParser.parseFromJdbcUrl(jdbcUrl);
         Assertions.assertEquals("mysql", dbType);
+        String gaussdbUrl = "jdbc:gaussdb://127.0.0.1:8000/seata";
+        Assertions.assertEquals("gaussdb", dbTypeParser.parseFromJdbcUrl(gaussdbUrl));
 
         DruidLoader druidLoaderForTest = new DruidLoaderForTest();
         dbTypeParser.setClassLoader(new DruidIsolationClassLoader(druidLoaderForTest));

@@ -37,8 +37,17 @@ import java.util.List;
 public class XAUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XAUtils.class);
+    private static final String GAUSSDB_DRIVER_CLASS = "com.huawei.gaussdb.jdbc.Driver";
+    private static final String GAUSSDB_XA_CONNECTION_CLASS = "com.huawei.gaussdb.jdbc.xa.PGXAConnection";
+    private static final String GAUSSDB_BASE_CONNECTION_CLASS = "com.huawei.gaussdb.jdbc.core.BaseConnection";
 
     public static String getDbType(String jdbcUrl, String driverClassName) {
+        if (jdbcUrl != null && jdbcUrl.toLowerCase().startsWith("jdbc:gaussdb:")) {
+            return JdbcConstants.GAUSSDB;
+        }
+        if (GAUSSDB_DRIVER_CLASS.equals(driverClassName)) {
+            return JdbcConstants.GAUSSDB;
+        }
         return JdbcUtils.getDbType(jdbcUrl, driverClassName);
     }
 
@@ -68,6 +77,8 @@ public class XAUtils {
                         return createXAConnection(physicalConn, "org.mariadb.jdbc.MariaXaConnection", dbType);
                     case JdbcConstants.POSTGRESQL:
                         return PGUtils.createXAConnection(physicalConn);
+                    case JdbcConstants.GAUSSDB:
+                        return createXAConnection(physicalConn, GAUSSDB_XA_CONNECTION_CLASS, dbType);
                     case JdbcConstants.KINGBASE:
                         return createXAConnection(physicalConn, "com.kingbase8.xa.KBXAConnection", dbType);
                     default:
@@ -114,6 +125,9 @@ public class XAUtils {
                 case JdbcConstants.KINGBASE:
                     Class<?> kingbaseConnectionClass = Class.forName("com.kingbase8.core.BaseConnection");
                     return xaConnectionClass.getConstructor(kingbaseConnectionClass);
+                case JdbcConstants.GAUSSDB:
+                    Class<?> gaussdbConnectionClass = Class.forName(GAUSSDB_BASE_CONNECTION_CLASS);
+                    return xaConnectionClass.getConstructor(gaussdbConnectionClass);
                 default:
                     throw new SQLException("xa reflect not support dbType: " + dbType);
             }
@@ -144,6 +158,12 @@ public class XAUtils {
                     if (mariaDbConnectionClass.isInstance(params[0])) {
                         Object mariaDbConnectionInstance = mariaDbConnectionClass.cast(params[0]);
                         result.add(mariaDbConnectionInstance);
+                        return result;
+                    }
+                case JdbcConstants.GAUSSDB:
+                    Class<?> gaussdbConnectionClass = Class.forName(GAUSSDB_BASE_CONNECTION_CLASS);
+                    if (gaussdbConnectionClass.isInstance(params[0])) {
+                        result.add(gaussdbConnectionClass.cast(params[0]));
                         return result;
                     }
                 default:

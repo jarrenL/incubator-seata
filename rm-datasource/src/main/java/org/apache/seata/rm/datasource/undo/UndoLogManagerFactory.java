@@ -18,6 +18,7 @@ package org.apache.seata.rm.datasource.undo;
 
 import org.apache.seata.common.loader.EnhancedServiceLoader;
 import org.apache.seata.common.util.CollectionUtils;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +34,8 @@ public class UndoLogManagerFactory {
      * @return undo log manager.
      */
     public static UndoLogManager getUndoLogManager(String dbType) {
+        String finalDbType = JdbcConstants.GAUSSDB.equalsIgnoreCase(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
-                UNDO_LOG_MANAGER_MAP, dbType, key -> EnhancedServiceLoader.load(UndoLogManager.class, dbType));
+                UNDO_LOG_MANAGER_MAP, finalDbType, key -> EnhancedServiceLoader.load(UndoLogManager.class, finalDbType));
     }
 }

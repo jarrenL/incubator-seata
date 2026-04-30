@@ -70,6 +70,11 @@ public enum DBType {
     POSTGRESQL,
 
     /**
+     * GaussDB db type.
+     */
+    GAUSSDB,
+
+    /**
      * Oceanbase db type.
      */
     OCEANBASE,

@@ -29,6 +29,9 @@ import java.util.Map;
  */
 public class LockStoreSqlFactory {
 
+    private static final String DB_TYPE_GAUSSDB = "gaussdb";
+    private static final String DB_TYPE_POSTGRESQL = "postgresql";
+
     private static Map<String /*dbType*/, LockStoreSql> LOCK_STORE_SQL_MAP = Maps.newConcurrentMap();
 
     /**
@@ -38,9 +41,10 @@ public class LockStoreSqlFactory {
      * @return lock store sql
      */
     public static LockStoreSql getLogStoreSql(String dbType) {
+        String finalDbType = DB_TYPE_GAUSSDB.equalsIgnoreCase(dbType) ? DB_TYPE_POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
                 LOCK_STORE_SQL_MAP,
-                dbType,
-                key -> EnhancedServiceLoader.load(LockStoreSql.class, dbType.toLowerCase()));
+                finalDbType,
+                key -> EnhancedServiceLoader.load(LockStoreSql.class, finalDbType.toLowerCase()));
     }
 }

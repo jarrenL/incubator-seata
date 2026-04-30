@@ -26,4 +26,11 @@ public class JdbcUtilsTest {
         DbTypeParser dbTypeParser = JdbcUtils.getDbTypeParser();
         Assertions.assertNotNull(dbTypeParser);
     }
+
+    @Test
+    public void testGaussDbTypeAndDriverClass() {
+        String jdbcUrl = "jdbc:gaussdb://127.0.0.1:8000/seata";
+        Assertions.assertEquals("gaussdb", JdbcUtils.getDbType(jdbcUrl));
+        Assertions.assertEquals("com.huawei.gaussdb.jdbc.Driver", JdbcUtils.getDriverClassName(jdbcUrl));
+    }
 }

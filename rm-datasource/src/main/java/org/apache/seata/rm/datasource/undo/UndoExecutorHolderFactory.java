@@ -18,6 +18,7 @@ package org.apache.seata.rm.datasource.undo;
 
 import org.apache.seata.common.loader.EnhancedServiceLoader;
 import org.apache.seata.common.util.CollectionUtils;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,7 +38,10 @@ public class UndoExecutorHolderFactory {
      * @return the UndoExecutorGroup
      */
     public static UndoExecutorHolder getUndoExecutorHolder(String dbType) {
+        String finalDbType = JdbcConstants.GAUSSDB.equalsIgnoreCase(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
-                UNDO_EXECUTOR_HOLDER_MAP, dbType, key -> EnhancedServiceLoader.load(UndoExecutorHolder.class, dbType));
+                UNDO_EXECUTOR_HOLDER_MAP,
+                finalDbType,
+                key -> EnhancedServiceLoader.load(UndoExecutorHolder.class, finalDbType));
     }
 }

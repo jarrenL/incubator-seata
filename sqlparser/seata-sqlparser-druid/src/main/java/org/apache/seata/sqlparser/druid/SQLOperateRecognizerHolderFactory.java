@@ -18,6 +18,7 @@ package org.apache.seata.sqlparser.druid;
 
 import org.apache.seata.common.loader.EnhancedServiceLoader;
 import org.apache.seata.common.util.CollectionUtils;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,12 +38,13 @@ public class SQLOperateRecognizerHolderFactory {
      * @return the SQLOperateRecognizer
      */
     public static SQLOperateRecognizerHolder getSQLRecognizerHolder(String dbType) {
+        String finalDbType = JdbcConstants.GAUSSDB.equalsIgnoreCase(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
                 RECOGNIZER_HOLDER_MAP,
-                dbType,
+                finalDbType,
                 key -> EnhancedServiceLoader.load(
                         SQLOperateRecognizerHolder.class,
-                        dbType,
+                        finalDbType,
                         SQLOperateRecognizerHolderFactory.class.getClassLoader()));
     }
 }

@@ -22,6 +22,7 @@ import org.apache.seata.rm.BaseDataSourceResource;
 import org.apache.seata.rm.DefaultResourceManager;
 import org.apache.seata.sqlparser.SqlParserType;
 import org.apache.seata.sqlparser.util.DbTypeParser;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 
 import javax.sql.DataSource;
 import javax.sql.XAConnection;
@@ -31,6 +32,8 @@ import java.sql.Driver;
 import java.sql.SQLException;
 
 public final class JdbcUtils {
+
+    public static final String GAUSSDB_DRIVER = "com.huawei.gaussdb.jdbc.Driver";
 
     private static volatile DbTypeParser dbTypeParser;
     private static final ResourceLock RESOURCE_LOCK = new ResourceLock();
@@ -49,7 +52,21 @@ public final class JdbcUtils {
     private JdbcUtils() {}
 
     public static String getDbType(String jdbcUrl) {
+        if (jdbcUrl != null && jdbcUrl.toLowerCase().startsWith("jdbc:gaussdb:")) {
+            return JdbcConstants.GAUSSDB;
+        }
         return getDbTypeParser().parseFromJdbcUrl(jdbcUrl).toLowerCase();
+    }
+
+    public static String getDriverClassName(String jdbcUrl) {
+        if (jdbcUrl != null && jdbcUrl.toLowerCase().startsWith("jdbc:gaussdb:")) {
+            return GAUSSDB_DRIVER;
+        }
+        try {
+            return com.alibaba.druid.util.JdbcUtils.getDriverClassName(jdbcUrl);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("can not parse jdbc url: " + jdbcUrl, e);
+        }
     }
 
     /**
@@ -65,7 +82,7 @@ public final class JdbcUtils {
         try (Connection connection = dataSource.getConnection()) {
             String jdbcUrl = connection.getMetaData().getURL();
             dataSourceResource.setResourceId(buildResourceId(jdbcUrl));
-            String driverClassName = com.alibaba.druid.util.JdbcUtils.getDriverClassName(jdbcUrl);
+            String driverClassName = getDriverClassName(jdbcUrl);
             dataSourceResource.setDriver(loadDriver(driverClassName));
             dataSourceResource.setDbType(JdbcUtils.getDbType(jdbcUrl));
         } catch (SQLException e) {
@@ -82,7 +99,7 @@ public final class JdbcUtils {
             try (Connection connection = xaConnection.getConnection()) {
                 String jdbcUrl = connection.getMetaData().getURL();
                 dataSourceResource.setResourceId(buildResourceId(jdbcUrl));
-                String driverClassName = com.alibaba.druid.util.JdbcUtils.getDriverClassName(jdbcUrl);
+                String driverClassName = getDriverClassName(jdbcUrl);
                 dataSourceResource.setDriver(loadDriver(driverClassName));
                 dataSourceResource.setDbType(JdbcUtils.getDbType(jdbcUrl));
             } finally {

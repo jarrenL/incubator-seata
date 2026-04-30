@@ -30,6 +30,8 @@ public interface JdbcConstants {
 
     String POSTGRESQL = "postgresql";
 
+    String GAUSSDB = "gaussdb";
+
     String SQLSERVER = "sqlserver";
 
     String JTDS = "jtds";

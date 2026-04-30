@@ -23,6 +23,7 @@ import org.apache.seata.rm.datasource.sql.struct.TableMetaCacheFactory;
 import org.apache.seata.sqlparser.SQLRecognizer;
 import org.apache.seata.sqlparser.SQLType;
 import org.apache.seata.sqlparser.struct.TableMeta;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -106,14 +107,15 @@ public abstract class AbstractConnectionProxy implements Connection {
     @Override
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         String dbType = getDbType();
+        String adaptedDbType = JdbcConstants.GAUSSDB.equals(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         // support oracle 10.2+
         PreparedStatement targetPreparedStatement = null;
         if (BranchType.AT == RootContext.getBranchType()) {
-            List<SQLRecognizer> sqlRecognizers = SQLVisitorFactory.get(sql, dbType);
+            List<SQLRecognizer> sqlRecognizers = SQLVisitorFactory.get(sql, adaptedDbType);
             if (sqlRecognizers != null && sqlRecognizers.size() == 1) {
                 SQLRecognizer sqlRecognizer = sqlRecognizers.get(0);
                 if (sqlRecognizer != null && sqlRecognizer.getSQLType() == SQLType.INSERT) {
-                    TableMeta tableMeta = TableMetaCacheFactory.getTableMetaCache(dbType)
+                    TableMeta tableMeta = TableMetaCacheFactory.getTableMetaCache(adaptedDbType)
                             .getTableMeta(
                                     getTargetConnection(),
                                     sqlRecognizer.getTableName(),

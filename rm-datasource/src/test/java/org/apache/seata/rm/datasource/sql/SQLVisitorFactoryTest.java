@@ -31,6 +31,7 @@ import org.apache.seata.sqlparser.druid.oracle.OracleDeleteRecognizer;
 import org.apache.seata.sqlparser.druid.oracle.OracleInsertRecognizer;
 import org.apache.seata.sqlparser.druid.oracle.OracleSelectForUpdateRecognizer;
 import org.apache.seata.sqlparser.druid.oracle.OracleUpdateRecognizer;
+import org.apache.seata.sqlparser.druid.postgresql.PostgresqlInsertRecognizer;
 import org.apache.seata.sqlparser.druid.polardbx.PolarDBXDeleteRecognizer;
 import org.apache.seata.sqlparser.druid.polardbx.PolarDBXInsertRecognizer;
 import org.apache.seata.sqlparser.druid.polardbx.PolarDBXSelectForUpdateRecognizer;
@@ -71,6 +72,8 @@ public class SQLVisitorFactoryTest {
         sql = "insert into t(id) values (1)";
         recognizer = SQLVisitorFactory.get(sql, JdbcConstants.ORACLE);
         Assertions.assertEquals(recognizer.get(0).getClass().getName(), OracleInsertRecognizer.class.getName());
+        recognizer = SQLVisitorFactory.get(sql, JdbcConstants.GAUSSDB);
+        Assertions.assertEquals(recognizer.get(0).getClass().getName(), PostgresqlInsertRecognizer.class.getName());
 
         // test for mysql/mariadb/polardb-x delete
         sql = "delete from t";

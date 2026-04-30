@@ -26,6 +26,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DistributedLockSqlFactory {
 
+    private static final String DB_TYPE_GAUSSDB = "gaussdb";
+    private static final String DB_TYPE_POSTGRESQL = "postgresql";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DistributedLockSqlFactory.class);
 
     protected static Map<String, DistributedLockSql> distributedLockSqlCache = new ConcurrentHashMap<>(4);
@@ -37,12 +40,13 @@ public class DistributedLockSqlFactory {
      * @return lock store sql
      */
     public static DistributedLockSql getDistributedLogStoreSql(String dbType) {
-        return distributedLockSqlCache.computeIfAbsent(dbType, method -> {
+        String finalDbType = DB_TYPE_GAUSSDB.equalsIgnoreCase(dbType) ? DB_TYPE_POSTGRESQL : dbType;
+        return distributedLockSqlCache.computeIfAbsent(finalDbType, method -> {
             try {
-                return EnhancedServiceLoader.load(DistributedLockSql.class, dbType);
+                return EnhancedServiceLoader.load(DistributedLockSql.class, finalDbType);
             } catch (EnhancedServiceNotFoundException ex) {
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Can't special implementation of DistributedLockSql for {}", dbType);
+                    LOGGER.debug("Can't special implementation of DistributedLockSql for {}", finalDbType);
                 }
             }
             return EnhancedServiceLoader.load(DistributedLockSql.class, "default");

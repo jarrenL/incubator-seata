@@ -18,10 +18,14 @@ package org.apache.seata.sqlparser.druid;
 
 import com.alibaba.druid.util.JdbcUtils;
 import org.apache.seata.sqlparser.util.DbTypeParser;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 
 class DruidDbTypeParserImpl implements DbTypeParser {
     @Override
     public String parseFromJdbcUrl(String jdbcUrl) {
+        if (jdbcUrl != null && jdbcUrl.toLowerCase().startsWith("jdbc:gaussdb:")) {
+            return JdbcConstants.GAUSSDB;
+        }
         return JdbcUtils.getDbType(jdbcUrl, null);
     }
 }

@@ -18,6 +18,7 @@ package org.apache.seata.sqlparser;
 
 import org.apache.seata.common.loader.EnhancedServiceLoader;
 import org.apache.seata.common.util.CollectionUtils;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,7 +38,8 @@ public class EscapeHandlerFactory {
      * @return keyword checker
      */
     public static EscapeHandler getEscapeHandler(String dbType) {
+        String finalDbType = JdbcConstants.GAUSSDB.equalsIgnoreCase(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
-                ESCAPE_HANDLER_MAP, dbType, key -> EnhancedServiceLoader.load(EscapeHandler.class, dbType));
+                ESCAPE_HANDLER_MAP, finalDbType, key -> EnhancedServiceLoader.load(EscapeHandler.class, finalDbType));
     }
 }

@@ -87,8 +87,9 @@ public class ExecuteTemplate {
         }
 
         String dbType = statementProxy.getConnectionProxy().getDbType();
+        String adaptedDbType = JdbcConstants.GAUSSDB.equals(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         if (CollectionUtils.isEmpty(sqlRecognizers)) {
-            sqlRecognizers = SQLVisitorFactory.get(statementProxy.getTargetSQL(), dbType);
+            sqlRecognizers = SQLVisitorFactory.get(statementProxy.getTargetSQL(), adaptedDbType);
         }
         Executor<T> executor;
         if (CollectionUtils.isEmpty(sqlRecognizers)) {
@@ -100,7 +101,7 @@ public class ExecuteTemplate {
                     case INSERT:
                         executor = EnhancedServiceLoader.load(
                                 InsertExecutor.class,
-                                dbType,
+                                adaptedDbType,
                                 new Class[] {StatementProxy.class, StatementCallback.class, SQLRecognizer.class},
                                 new Object[] {statementProxy, statementCallback, sqlRecognizer});
                         break;

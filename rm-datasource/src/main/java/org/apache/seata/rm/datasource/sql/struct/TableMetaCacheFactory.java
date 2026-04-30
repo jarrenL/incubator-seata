@@ -24,6 +24,7 @@ import org.apache.seata.common.util.StringUtils;
 import org.apache.seata.config.ConfigurationFactory;
 import org.apache.seata.rm.datasource.DataSourceProxy;
 import org.apache.seata.sqlparser.struct.TableMetaCache;
+import org.apache.seata.sqlparser.util.JdbcConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,8 +76,11 @@ public class TableMetaCacheFactory {
      * @return table meta cache
      */
     public static TableMetaCache getTableMetaCache(String dbType) {
+        String finalDbType = JdbcConstants.GAUSSDB.equalsIgnoreCase(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
-                TABLE_META_CACHE_MAP, dbType, key -> EnhancedServiceLoader.load(TableMetaCache.class, dbType));
+                TABLE_META_CACHE_MAP,
+                finalDbType,
+                key -> EnhancedServiceLoader.load(TableMetaCache.class, finalDbType));
     }
 
     /**

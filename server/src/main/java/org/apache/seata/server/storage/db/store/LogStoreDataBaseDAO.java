@@ -532,7 +532,7 @@ public class LogStoreDataBaseDAO implements LogStore {
     private String getSchema(Connection conn) throws SQLException {
         if ("h2".equalsIgnoreCase(dbType)) {
             return null;
-        } else if ("postgresql".equalsIgnoreCase(dbType)) {
+        } else if ("postgresql".equalsIgnoreCase(dbType) || "gaussdb".equalsIgnoreCase(dbType)) {
             String sql = "select current_schema";
             try (PreparedStatement ps = conn.prepareStatement(sql);
                     ResultSet rs = ps.executeQuery()) {

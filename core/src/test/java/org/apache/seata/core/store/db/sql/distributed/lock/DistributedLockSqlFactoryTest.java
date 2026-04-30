@@ -37,6 +37,13 @@ class DistributedLockSqlFactoryTest {
     }
 
     @Test
+    void testGetDistributedLogStoreSqlForGaussdb() {
+        DistributedLockSql sql = DistributedLockSqlFactory.getDistributedLogStoreSql("gaussdb");
+        assertNotNull(sql);
+        assertTrue(sql instanceof BaseDistributedLockSql);
+    }
+
+    @Test
     void testGetDistributedLogStoreSqlForUnsupportedDb() {
         DistributedLockSql sql = DistributedLockSqlFactory.getDistributedLogStoreSql("unsupported");
         assertNotNull(sql);

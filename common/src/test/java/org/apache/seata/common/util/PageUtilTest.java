@@ -71,6 +71,7 @@ public class PageUtilTest {
         assertEquals(PageUtil.pageSql(sourceSql, "mysql", 1, 5), mysqlTargetSql);
         assertEquals(PageUtil.pageSql(sourceSql, "h2", 1, 5), mysqlTargetSql);
         assertEquals(PageUtil.pageSql(sourceSql, "postgresql", 1, 5), mysqlTargetSql);
+        assertEquals(PageUtil.pageSql(sourceSql, "gaussdb", 1, 5), mysqlTargetSql);
         assertEquals(PageUtil.pageSql(sourceSql, "oceanbase", 1, 5), mysqlTargetSql);
         assertEquals(PageUtil.pageSql(sourceSql, "dm", 1, 5), mysqlTargetSql);
         assertEquals(PageUtil.pageSql(sourceSql, "oscar", 1, 5), mysqlTargetSql);
@@ -89,6 +90,7 @@ public class PageUtilTest {
         assertEquals(PageUtil.countSql(sourceSql, "mysql"), targetSql);
         assertEquals(PageUtil.countSql(sourceSql, "h2"), targetSql);
         assertEquals(PageUtil.countSql(sourceSql, "postgresql"), targetSql);
+        assertEquals(PageUtil.countSql(sourceSql, "gaussdb"), targetSql);
         assertEquals(PageUtil.countSql(sourceSql, "oceanbase"), targetSql);
         assertEquals(PageUtil.countSql(sourceSql, "dm"), targetSql);
         assertEquals(PageUtil.countSql(sourceSql, "oscar"), targetSql);
@@ -174,7 +176,7 @@ public class PageUtilTest {
 
     @Test
     public void getTimeStartSqlSupportedDBTypes() {
-        String[] supportedDBTypes = {"mysql", "oracle", "postgresql", "sqlserver", "dm", "oscar"};
+        String[] supportedDBTypes = {"mysql", "oracle", "postgresql", "gaussdb", "sqlserver", "dm", "oscar"};
         String expectedSQL = " and FLOOR(gmt_create/1000) >= ? ";
 
         for (String dbType : supportedDBTypes) {
