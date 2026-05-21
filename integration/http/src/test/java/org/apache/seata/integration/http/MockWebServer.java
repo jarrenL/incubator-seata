@@ -36,12 +36,17 @@ public class MockWebServer {
 
     private Map<String, String> urlServletMap = new HashMap<>();
 
-    public void start(int port) {
+    public int start(int port) {
         initServletMapping();
+        ServerSocket serverSocket;
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        int localPort = serverSocket.getLocalPort();
         new Thread(() -> {
-                    ServerSocket serverSocket = null;
                     try {
-                        serverSocket = new ServerSocket(port);
                         Socket socket = serverSocket.accept();
                         InputStream inputStream = socket.getInputStream();
                         OutputStream outputStream = socket.getOutputStream();
@@ -66,6 +71,7 @@ public class MockWebServer {
                     }
                 })
                 .start();
+        return localPort;
     }
 
     public void initServletMapping() {

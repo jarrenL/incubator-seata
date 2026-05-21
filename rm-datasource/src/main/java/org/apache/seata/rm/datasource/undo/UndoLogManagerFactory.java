@@ -36,6 +36,8 @@ public class UndoLogManagerFactory {
     public static UndoLogManager getUndoLogManager(String dbType) {
         String finalDbType = JdbcConstants.GAUSSDB.equalsIgnoreCase(dbType) ? JdbcConstants.POSTGRESQL : dbType;
         return CollectionUtils.computeIfAbsent(
-                UNDO_LOG_MANAGER_MAP, finalDbType, key -> EnhancedServiceLoader.load(UndoLogManager.class, finalDbType));
+                UNDO_LOG_MANAGER_MAP,
+                finalDbType,
+                key -> EnhancedServiceLoader.load(UndoLogManager.class, finalDbType));
     }
 }

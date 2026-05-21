@@ -210,6 +210,10 @@
             <artifactId>postgresql</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.huaweicloud.gaussdb</groupId>
+            <artifactId>gaussdbjdbc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.dameng</groupId>
             <artifactId>DmJdbcDriver18</artifactId>
         </dependency>

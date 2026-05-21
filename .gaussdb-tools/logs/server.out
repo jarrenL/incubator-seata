@@ -1,0 +1,257 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/Users/lj/.m2/repository/ch/qos/logback/logback-classic/1.2.12/logback-classic-1.2.12.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/Users/lj/.m2/repository/org/slf4j/slf4j-simple/1.7.36/slf4j-simple-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+███████╗███████╗ █████╗ ████████╗ █████╗
+██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗
+███████╗█████╗  ███████║   ██║   ███████║
+╚════██║██╔══╝  ██╔══██║   ██║   ██╔══██║
+███████║███████╗██║  ██║   ██║   ██║  ██║
+╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+
+
+11:41:01.355  INFO --- [                     main] [der$InnerEnhancedServiceLoader] [lExtensionDefinition]  [] : Ignore load compatible class io.seata.config.ExtConfigurationProvider, because is not assignable from origin type org.apache.seata.config.ExtConfigurationProvider
+11:41:01.385  INFO --- [                     main] [ta.config.ConfigurationFactory] [                load]  [] : load Configuration from :FileConfiguration$$EnhancerByCGLIB$$6e15d955
+11:41:01.398  INFO --- [                     main] [seata.server.ServerApplication] [         logStarting]  [] : Starting ServerApplication using Java 11.0.30 on LJdeMacBook-Pro with PID 12153 (/Users/lj/IdeaProjects/incubator-seata/server/target/classes started by lj in /Users/lj/IdeaProjects/incubator-seata)
+11:41:01.398  INFO --- [                     main] [seata.server.ServerApplication] [ogStartupProfileInfo]  [] : The following 1 profile is active: "gaussdb"
+11:41:01.684  INFO --- [                     main] [rver.lock.LockerManagerFactory] [                init]  [] : use lock store mode: db
+11:41:01.833  INFO --- [                     main] [seata.server.ServerApplication] [          logStarted]  [] : Started ServerApplication in 0.809 seconds (JVM running for 1.06)
+11:41:01.905  INFO --- [                     main] [a.server.session.SessionHolder] [                init]  [] : use session store mode: db
+11:41:04.286  INFO --- [                     main] [aba.druid.pool.DruidDataSource] [                init]  [] : {dataSource-1} inited
+11:41:04.435  INFO --- [                     main] [rpc.netty.NettyServerBootstrap] [               start]  [] : Server started, service listen port: 8091
+11:41:04.438  INFO --- [                     main] [ache.seata.server.ServerRunner] [                 run]  [] : 
+ you can visit seata console UI on namingserver. 
+ log path: /Users/lj/IdeaProjects/incubator-seata/.gaussdb-tools/logs.
+11:41:04.438  INFO --- [                     main] [ache.seata.server.ServerRunner] [                 run]  [] : seata server started in 2604 millSeconds
+11:49:37.522 ERROR --- [      AsyncCommitting_1_1] [lock.DataBaseDistributedLocker] [         acquireLock]  [] : execute acquire lock failure, key is: AsyncCommitting
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: [127.0.0.1:58468/.0.0.0/0.0.0.0:8000] socket is not closed; Urgent packet sent to backend successfully; An I/O error occurred while sending to the backend.detail:Read timed out; 
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.handleIoException(QueryExecutorImpl.java:5046)
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:1354)
+	at com.huawei.gaussdb.jdbc.core.v3.TracedQueryExecutorImpl.execute(TracedQueryExecutorImpl.java:98)
+	at com.huawei.gaussdb.jdbc.jdbc.PgStatement.runQueryExecutor(PgStatement.java:737)
+	at com.huawei.gaussdb.jdbc.jdbc.PgStatement.executeInternal(PgStatement.java:690)
+	at com.huawei.gaussdb.jdbc.jdbc.PgStatement.execute(PgStatement.java:497)
+	at com.huawei.gaussdb.jdbc.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:209)
+	at com.huawei.gaussdb.jdbc.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:146)
+	at com.alibaba.druid.pool.DruidPooledPreparedStatement.executeQuery(DruidPooledPreparedStatement.java:213)
+	at org.apache.seata.server.storage.db.lock.DataBaseDistributedLocker.getDistributedLockDO(DataBaseDistributedLocker.java:241)
+	at org.apache.seata.server.storage.db.lock.DataBaseDistributedLocker.acquireLock(DataBaseDistributedLocker.java:128)
+	at org.apache.seata.server.session.SessionHolder.acquireDistributedLock(SessionHolder.java:408)
+	at org.apache.seata.server.session.SessionHolder.distributedLockAndExecute(SessionHolder.java:432)
+	at org.apache.seata.server.coordinator.DefaultCoordinator.lambda$init$13(DefaultCoordinator.java:772)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at java.base/java.net.SocketInputStream.socketRead(SocketInputStream.java:115)
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:168)
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:140)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:139)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:108)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:66)
+	at com.huawei.gaussdb.jdbc.core.PGStream.receiveChar(PGStream.java:407)
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:4151)
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:1322)
+	... 19 common frames omitted
+ <==
+11:49:37.523  WARN --- [      AsyncCommitting_1_1] [lock.DataBaseDistributedLocker] [         acquireLock]  [] : rollback fail because of This connection has been closed. socketAddress=[127.0.0.1:58468/.0.0.0/0.0.0.0:8000]
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: This connection has been closed. socketAddress=[127.0.0.1:58468/.0.0.0/0.0.0.0:8000]
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.checkClosed(PgConnection.java:1443)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.rollback(PgConnection.java:1456)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:806)
+	at org.apache.seata.server.storage.db.lock.DataBaseDistributedLocker.acquireLock(DataBaseDistributedLocker.java:156)
+	at org.apache.seata.server.session.SessionHolder.acquireDistributedLock(SessionHolder.java:408)
+	at org.apache.seata.server.session.SessionHolder.distributedLockAndExecute(SessionHolder.java:432)
+	at org.apache.seata.server.coordinator.DefaultCoordinator.lambda$init$13(DefaultCoordinator.java:772)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+ <==
+11:49:39.536 ERROR --- [     RetryRollbacking_1_1] [lock.DataBaseDistributedLocker] [         releaseLock]  [] : execute release lock failure, key is: RetryRollbacking
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: [127.0.0.1:58503/.0.0.0/0.0.0.0:8000] socket is not closed; Urgent packet sent to backend successfully; An I/O error occurred while sending to the backend.detail:Read timed out; 
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.handleIoException(QueryExecutorImpl.java:5046)
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:1354)
+	at com.huawei.gaussdb.jdbc.core.v3.TracedQueryExecutorImpl.execute(TracedQueryExecutorImpl.java:98)
+	at com.huawei.gaussdb.jdbc.jdbc.PgStatement.runQueryExecutor(PgStatement.java:737)
+	at com.huawei.gaussdb.jdbc.jdbc.PgStatement.executeInternal(PgStatement.java:690)
+	at com.huawei.gaussdb.jdbc.jdbc.PgStatement.execute(PgStatement.java:497)
+	at com.huawei.gaussdb.jdbc.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:209)
+	at com.huawei.gaussdb.jdbc.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:146)
+	at com.alibaba.druid.pool.DruidPooledPreparedStatement.executeQuery(DruidPooledPreparedStatement.java:213)
+	at org.apache.seata.server.storage.db.lock.DataBaseDistributedLocker.getDistributedLockDO(DataBaseDistributedLocker.java:241)
+	at org.apache.seata.server.storage.db.lock.DataBaseDistributedLocker.releaseLock(DataBaseDistributedLocker.java:187)
+	at org.apache.seata.server.session.SessionHolder.releaseDistributedLock(SessionHolder.java:418)
+	at org.apache.seata.server.session.SessionHolder.distributedLockAndExecute(SessionHolder.java:441)
+	at org.apache.seata.server.coordinator.DefaultCoordinator.lambda$init$11(DefaultCoordinator.java:760)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at java.base/java.net.SocketInputStream.socketRead(SocketInputStream.java:115)
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:168)
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:140)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:139)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:108)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:66)
+	at com.huawei.gaussdb.jdbc.core.PGStream.receiveChar(PGStream.java:407)
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:4151)
+	at com.huawei.gaussdb.jdbc.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:1322)
+	... 19 common frames omitted
+ <==
+11:49:39.536  WARN --- [     RetryRollbacking_1_1] [lock.DataBaseDistributedLocker] [         releaseLock]  [] : rollback fail because of This connection has been closed. socketAddress=[127.0.0.1:58503/.0.0.0/0.0.0.0:8000]
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: This connection has been closed. socketAddress=[127.0.0.1:58503/.0.0.0/0.0.0.0:8000]
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.checkClosed(PgConnection.java:1443)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.rollback(PgConnection.java:1456)
+	at com.alibaba.druid.pool.DruidPooledConnection.rollback(DruidPooledConnection.java:806)
+	at org.apache.seata.server.storage.db.lock.DataBaseDistributedLocker.releaseLock(DataBaseDistributedLocker.java:218)
+	at org.apache.seata.server.session.SessionHolder.releaseDistributedLock(SessionHolder.java:418)
+	at org.apache.seata.server.session.SessionHolder.distributedLockAndExecute(SessionHolder.java:441)
+	at org.apache.seata.server.coordinator.DefaultCoordinator.lambda$init$11(DefaultCoordinator.java:760)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+ <==
+11:49:39.538 ERROR --- [ionPool-Create-1263973655] [aba.druid.pool.DruidDataSource] [                 run]  [] : create connection SQLException, url: jdbc:gaussdb://1.92.120.69:8000/postgres?currentSchema=public, errorCode 0, state 08001
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: ????????
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:685)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:769)
+	at com.huawei.gaussdb.jdbc.core.ConnectionFactory.openConnection(ConnectionFactory.java:71)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.createQueryExecutor(PgConnection.java:710)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.<init>(PgConnection.java:408)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnectionInternal(Driver.java:811)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnection(Driver.java:786)
+	at com.huawei.gaussdb.jdbc.Driver.connect(Driver.java:431)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1703)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1801)
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2946)
+Caused by: java.net.SocketException: Can't connect to SOCKS proxy:Can't assign requested address (Address not available)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:424)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at com.huawei.gaussdb.jdbc.core.PGStream.<init>(PGStream.java:92)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.createDatabaseStream(ConnectionFactoryImpl.java:326)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:252)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:442)
+	... 10 common frames omitted
+ <==
+11:49:39.538 ERROR --- [ionPool-Create-1263973655] [aba.druid.pool.DruidDataSource] [                 run]  [] : create connection SQLException, url: jdbc:gaussdb://1.92.120.69:8000/postgres?currentSchema=public, errorCode 0, state 08001
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: ????????
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:685)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:769)
+	at com.huawei.gaussdb.jdbc.core.ConnectionFactory.openConnection(ConnectionFactory.java:71)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.createQueryExecutor(PgConnection.java:710)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.<init>(PgConnection.java:408)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnectionInternal(Driver.java:811)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnection(Driver.java:786)
+	at com.huawei.gaussdb.jdbc.Driver.connect(Driver.java:431)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1703)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1801)
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2946)
+Caused by: java.net.SocketException: Can't connect to SOCKS proxy:Can't assign requested address (Address not available)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:424)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at com.huawei.gaussdb.jdbc.core.PGStream.<init>(PGStream.java:92)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.createDatabaseStream(ConnectionFactoryImpl.java:326)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:252)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:442)
+	... 10 common frames omitted
+ <==
+11:49:39.539  INFO --- [ionPool-Create-1263973655] [d.pool.DruidAbstractDataSource] [   setFailContinuous]  [] : {dataSource-1} failContinuous is true
+11:49:40.040 ERROR --- [ionPool-Create-1263973655] [aba.druid.pool.DruidDataSource] [                 run]  [] : create connection SQLException, url: jdbc:gaussdb://1.92.120.69:8000/postgres?currentSchema=public, errorCode 0, state 08001
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: ????????
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:685)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:769)
+	at com.huawei.gaussdb.jdbc.core.ConnectionFactory.openConnection(ConnectionFactory.java:71)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.createQueryExecutor(PgConnection.java:710)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.<init>(PgConnection.java:408)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnectionInternal(Driver.java:811)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnection(Driver.java:786)
+	at com.huawei.gaussdb.jdbc.Driver.connect(Driver.java:431)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1703)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1801)
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2946)
+Caused by: java.net.SocketException: Can't connect to SOCKS proxy:Can't assign requested address (Address not available)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:424)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at com.huawei.gaussdb.jdbc.core.PGStream.<init>(PGStream.java:92)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.createDatabaseStream(ConnectionFactoryImpl.java:326)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:252)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:442)
+	... 10 common frames omitted
+ <==
+11:49:40.547 ERROR --- [ionPool-Create-1263973655] [aba.druid.pool.DruidDataSource] [                 run]  [] : create connection SQLException, url: jdbc:gaussdb://1.92.120.69:8000/postgres?currentSchema=public, errorCode 0, state 08001
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: ????????
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:685)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:769)
+	at com.huawei.gaussdb.jdbc.core.ConnectionFactory.openConnection(ConnectionFactory.java:71)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.createQueryExecutor(PgConnection.java:710)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.<init>(PgConnection.java:408)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnectionInternal(Driver.java:811)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnection(Driver.java:786)
+	at com.huawei.gaussdb.jdbc.Driver.connect(Driver.java:431)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1703)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1801)
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2946)
+Caused by: java.net.SocketException: Can't connect to SOCKS proxy:Can't assign requested address (Address not available)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:424)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at com.huawei.gaussdb.jdbc.core.PGStream.<init>(PGStream.java:92)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.createDatabaseStream(ConnectionFactoryImpl.java:326)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:252)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:442)
+	... 10 common frames omitted
+ <==
+11:49:41.057 ERROR --- [ionPool-Create-1263973655] [aba.druid.pool.DruidDataSource] [                 run]  [] : create connection SQLException, url: jdbc:gaussdb://1.92.120.69:8000/postgres?currentSchema=public, errorCode 0, state 08001
+==> 
+com.huawei.gaussdb.jdbc.util.PSQLException: ????????
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:685)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:769)
+	at com.huawei.gaussdb.jdbc.core.ConnectionFactory.openConnection(ConnectionFactory.java:71)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.createQueryExecutor(PgConnection.java:710)
+	at com.huawei.gaussdb.jdbc.jdbc.PgConnection.<init>(PgConnection.java:408)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnectionInternal(Driver.java:811)
+	at com.huawei.gaussdb.jdbc.Driver.makeConnection(Driver.java:786)
+	at com.huawei.gaussdb.jdbc.Driver.connect(Driver.java:431)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1703)
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1801)
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2946)
+Caused by: java.net.SocketException: Connection reset
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:186)
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:140)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:139)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:108)
+	at com.huawei.gaussdb.jdbc.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:66)
+	at com.huawei.gaussdb.jdbc.core.PGStream.receiveChar(PGStream.java:407)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:1082)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:303)
+	at com.huawei.gaussdb.jdbc.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:442)
+	... 10 common frames omitted
+ <==
+11:49:42.769  INFO --- [ionPool-Create-1263973655] [d.pool.DruidAbstractDataSource] [   setFailContinuous]  [] : {dataSource-1} failContinuous is false
+11:51:02.708  INFO --- [ngApplicationShutdownHook] [rpc.netty.NettyServerBootstrap] [            shutdown]  [] : Shutting server down, the listen port: 8091

@@ -39,7 +39,7 @@ import static org.apache.seata.integration.http.AbstractHttpExecutor.convertPara
 
 class HttpTest {
 
-    private static final String host = "http://127.0.0.1:8081";
+    private String host;
     private static final String testException = "/testException";
     private static final String getPath = "/testGet";
     private static final String postPath = "/testPost";
@@ -75,7 +75,8 @@ class HttpTest {
     }
 
     public void providerStart() {
-        new MockWebServer().start(8081);
+        int port = new MockWebServer().start(0);
+        host = "http://127.0.0.1:" + port;
     }
 
     public static class Person {

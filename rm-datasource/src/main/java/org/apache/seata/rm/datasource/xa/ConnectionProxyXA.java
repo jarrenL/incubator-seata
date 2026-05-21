@@ -90,6 +90,10 @@ public class ConnectionProxyXA extends AbstractConnectionProxyXA implements Hold
     public void init() {
         try {
             this.xaResource = xaConnection.getXAResource();
+            // Force autocommit=true for XA mode (required by XA protocol)
+            if (!this.originalConnection.getAutoCommit()) {
+                this.originalConnection.setAutoCommit(true);
+            }
             this.currentAutoCommitStatus = this.originalConnection.getAutoCommit();
             if (!currentAutoCommitStatus) {
                 throw new IllegalStateException("Connection[autocommit=false] as default is NOT supported");

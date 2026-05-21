@@ -44,10 +44,9 @@ public class ApolloMockServer {
     /**
      * Instantiates a new Apollo mock server.
      *
-     * @param port the port
      * @throws IOException the io exception
      */
-    public ApolloMockServer(int port) throws IOException {
+    public ApolloMockServer() throws IOException {
 
         server = new MockWebServer();
         server.setDispatcher(new Dispatcher() {
@@ -68,8 +67,8 @@ public class ApolloMockServer {
                 return new MockResponse().setResponseCode(404);
             }
         });
-        server.start(port);
-        System.setProperty("apollo.configService", "http://localhost:" + port);
+        server.start();
+        System.setProperty("apollo.configService", "http://localhost:" + server.getPort());
     }
 
     private String loadMockData(String appId, String Cluster, String namespace) throws JsonProcessingException {

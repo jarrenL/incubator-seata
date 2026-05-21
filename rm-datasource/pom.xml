@@ -144,6 +144,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.huaweicloud.gaussdb</groupId>
+            <artifactId>gaussdbjdbc</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.fury</groupId>
             <artifactId>fury-core</artifactId>
             <scope>provided</scope>

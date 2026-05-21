@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class ApolloConfigurationTest {
 
-    private static final int PORT = 8081;
     private static ApolloMockServer apolloMockServer;
 
     private static ApolloConfiguration apolloConfiguration;
@@ -48,7 +47,7 @@ public class ApolloConfigurationTest {
     @BeforeAll
     public static void setUp() throws IOException {
         System.setProperty("seataEnv", "test");
-        apolloMockServer = new ApolloMockServer(PORT);
+        apolloMockServer = new ApolloMockServer();
         apolloConfiguration = ApolloConfiguration.getInstance();
     }
 

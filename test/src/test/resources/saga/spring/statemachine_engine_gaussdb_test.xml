@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="com.huawei.gaussdb.jdbc.Driver"/>
+        <property name="url" value="jdbc:gaussdb://1.92.120.69:8000/postgres?currentSchema=public"/>
+        <property name="username" value="root"/>
+        <property name="password" value="GaussDB123"/>
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="8"/>
+        <property name="validationQuery" value="SELECT 1"/>
+    </bean>
+
+    <bean id="stateMachineEngine" class="org.apache.seata.saga.engine.impl.ProcessCtrlStateMachineEngine">
+        <property name="stateMachineConfig" ref="dbStateMachineConfig"/>
+    </bean>
+
+    <bean id="dbStateMachineConfig" class="org.apache.seata.saga.engine.config.DbStateMachineConfig">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="tablePrefix" value="seata_"/>
+        <property name="resources" value="saga/statelang/simple_statelang.json"/>
+        <property name="enableAsync" value="false"/>
+        <property name="threadPoolExecutor" ref="threadExecutor"/>
+        <property name="applicationId" value="gaussdb_mode_verifier_saga"/>
+        <property name="txServiceGroup" value="default_tx_group"/>
+        <property name="sagaBranchRegisterEnable" value="false"/>
+        <property name="sagaJsonParser" value="jackson"/>
+        <property name="sagaRetryPersistModeUpdate" value="false"/>
+        <property name="sagaCompensatePersistModeUpdate" value="false"/>
+    </bean>
+
+    <bean id="threadExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
+        <property name="threadNamePrefix" value="SAGA_GAUSSDB_"/>
+        <property name="corePoolSize" value="1"/>
+        <property name="maxPoolSize" value="4"/>
+        <property name="queueCapacity" value="16"/>
+        <property name="rejectedExecutionHandler" ref="callerRunsPolicy"/>
+    </bean>
+
+    <bean name="callerRunsPolicy" class="java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy"/>
+    <bean id="demoService" class="org.apache.seata.saga.engine.mock.DemoService"/>
+</beans>
