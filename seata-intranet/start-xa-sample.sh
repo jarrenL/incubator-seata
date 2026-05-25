@@ -129,7 +129,7 @@ fi
 
 echo ""
 echo "[XA] 服务已启动，手动触发 XA 事务："
-echo "  curl http://127.0.0.1:${BUSINESS_PORT}/purchase/commit"
-echo "  curl http://127.0.0.1:${BUSINESS_PORT}/purchase/rollback"
+echo "  curl \"http://127.0.0.1:${BUSINESS_PORT}/purchase?rollback=false\""
+echo "  curl \"http://127.0.0.1:${BUSINESS_PORT}/purchase?rollback=true\""
 echo ""
 echo "  日志: tail -f /tmp/seata-xa-{account,storage,order,business}.log"
