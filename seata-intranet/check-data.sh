@@ -59,9 +59,9 @@ else
     echo ""
     echo "┌──────────────────────────────────────┐"
     echo "│  AT commit 期望:                      │"
-    echo "│  account_tbl: money=9200 (-800)       │"
-    echo "│  order_tbl:   2 rows                  │"
-    echo "│  stock_tbl:   count=96 (-4)           │"
+    echo "│  account_tbl: money=9600 (-400)       │"
+    echo "│  order_tbl:   1 row (count=2)         │"
+    echo "│  stock_tbl:   count=98 (-2)           │"
     echo "│  undo_log:    全部为 0                │"
     echo "└──────────────────────────────────────┘"
 fi
