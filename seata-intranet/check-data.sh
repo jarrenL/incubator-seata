@@ -29,7 +29,7 @@ fi
 # 对指定数据库执行 SQL
 run_on_db() {
     local db="$1"; local sql="$2"
-    local url="${BASE}/${db}?currentSchema=public"
+    local url="${BASE}/${db}?currentSchema=public&defaultTransactionReadOnly=false"
     java -cp "$RUNNER_CP" SqlRunner "$url" "$GAUSSDB_USER" "$GAUSSDB_PASSWORD" - "$sql"
 }
 

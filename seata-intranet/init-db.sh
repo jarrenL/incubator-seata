@@ -16,7 +16,7 @@ if [ -z "$GAUSSDB_HOST" ]; then
 fi
 
 TARGET="${1:-all}"
-DB_URL="jdbc:gaussdb://${GAUSSDB_HOST}:${GAUSSDB_PORT}/postgres?currentSchema=public"
+DB_URL="jdbc:gaussdb://${GAUSSDB_HOST}:${GAUSSDB_PORT}/postgres?currentSchema=public&defaultTransactionReadOnly=false"
 DB_USER="${GAUSSDB_USER}"
 DB_PASS="${GAUSSDB_PASSWORD}"
 
@@ -145,7 +145,7 @@ SQLEOF
 # 对指定数据库执行 SQL 文件
 run_sql_on_db() {
     local desc="$1"; local db="$2"; local sql_file="$3"
-    local db_url="jdbc:gaussdb://${GAUSSDB_HOST}:${GAUSSDB_PORT}/${db}?currentSchema=public"
+    local db_url="jdbc:gaussdb://${GAUSSDB_HOST}:${GAUSSDB_PORT}/${db}?currentSchema=public&defaultTransactionReadOnly=false"
     echo "  → ${desc} (库: ${db})..."
     java -cp "$RUNNER_CP" SqlRunner "$db_url" "$DB_USER" "$DB_PASS" "$sql_file"
     echo "  ✓ 完成"
